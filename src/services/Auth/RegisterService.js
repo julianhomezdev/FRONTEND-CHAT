@@ -1,20 +1,20 @@
 export async function RegisterService(data) {
-  // Log EXACTO de lo que se envía
-  console.log("📤 Data being sent:", data);
-  console.log("📤 JSON string:", JSON.stringify(data, null, 2));
 
   try {
     const response = await fetch("https://localhost:7125/api/Register/register", {
+
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
+
       },
+
       body: JSON.stringify(data),
+
     });
 
     console.log("📥 Response status:", response.status);
     
-    // Obtener el texto de la respuesta ANTES de parsear
     const responseText = await response.text();
     console.log("📥 Raw response:", responseText);
 
@@ -38,7 +38,7 @@ export async function RegisterService(data) {
 
     // Parse el JSON exitoso
     const result = JSON.parse(responseText);
-    console.log("✅ Success result:", result);
+
     return result;
 
   } catch (error) {
