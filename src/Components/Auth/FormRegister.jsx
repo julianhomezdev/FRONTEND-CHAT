@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { RegisterService } from "../../services/Auth/RegisterService";
 import Alert from "../Alerts/Alert";
+import { useNavigate  } from "react-router";
 
 export function FormRegister() {
+
+  // Navigation
+  const navigate = useNavigate();
 
   // Initialize the data
   const [form, setForm] = useState({
@@ -30,7 +34,7 @@ export function FormRegister() {
     // Auto-hide 5 sec
     setTimeout(() => {
       setAlert(prev => ({ ...prev, show: false }));
-    }, 5000);
+    }, 3000);
   };
 
   // Function to hide the alert
@@ -68,8 +72,14 @@ export function FormRegister() {
 
       const response = await RegisterService(requestData);
 
-      console.log("Registration successful:", response);
+      //console.log("Registration successful:", response);
       showAlert(true, "Account created successfully!");
+
+      setTimeout(() => {
+
+        navigate("/auth/login");
+
+      }, 3500);
       
       // Reset form
       setForm({
@@ -81,11 +91,15 @@ export function FormRegister() {
       });
 
     } catch (error) {
-      console.error("Registration error:", error.message);
+
+      //console.error("Registration error:", error.message);
       showAlert(false, `Registration failed: ${error.message}`);
-      console.log("Current form state:", form);
+      //console.log("Current form state:", form);
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
