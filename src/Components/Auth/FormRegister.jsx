@@ -77,7 +77,7 @@ export function FormRegister() {
 
       setTimeout(() => {
 
-        navigate("/auth/login");
+        navigate("/auth/verification");
 
       }, 3500);
       
