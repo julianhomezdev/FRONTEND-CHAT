@@ -75,11 +75,14 @@ export function FormRegister() {
       //console.log("Registration successful:", response);
       showAlert(true, "Account created successfully!");
 
+      // Save the email to send it with the verification code to the API
+      localStorage.setItem("verificationEmail", trimmedEmail);
+
       setTimeout(() => {
 
         navigate("/auth/verification");
 
-      }, 3500);
+      }, 2500);
       
       // Reset form
       setForm({

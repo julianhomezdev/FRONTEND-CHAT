@@ -3,6 +3,7 @@ import { RegisterPage } from "./Pages/Auth/RegisterPage";
 import './App.css'
 import { LoginPage } from "./Pages/Auth/LoginPage";
 import { VerificationPage } from "./Pages/Auth/VerificationPage";
+import { HomePage } from "./Pages/common/HomePage";
 
 export function App () {
     return (
@@ -12,6 +13,7 @@ export function App () {
                 <Route path="/auth/register" element={<RegisterPage/>}/>
                 <Route path="/auth/login" element={<LoginPage/>}/>
                 <Route path="/auth/verification" element={<VerificationPage/>} />
+                <Route path="/" element={<HomePage/>}/>
             </Routes>
         </BrowserRouter>
     )

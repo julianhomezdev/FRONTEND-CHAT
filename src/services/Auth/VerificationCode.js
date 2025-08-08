@@ -1,7 +1,7 @@
-export async function VerificationCode(code) {
+export async function VerificationCode(data) {
 
   try {
-    const response = await fetch("https://localhost:7125/api/Register/verify", {
+    const response = await fetch("https://localhost:7125/Verify", {
 
       method: 'POST',
       headers: {
@@ -9,7 +9,7 @@ export async function VerificationCode(code) {
 
       },
 
-      body: JSON.stringify(code),
+      body: JSON.stringify(data),
 
     });
 
