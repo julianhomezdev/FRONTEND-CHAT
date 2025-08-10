@@ -1,173 +1,97 @@
+// src/Pages/Auth/RegisterPage.jsx
 import { useState } from "react";
 import { RegisterService } from "../../services/Auth/RegisterService";
-import Alert from "../Alerts/Alert";
-import { useNavigate  } from "react-router";
+import Alert from "../../Components/Alerts/Alert";
+import { useNavigate } from "react-router-dom";
 
 export function FormRegister() {
-
-  // Navigation
   const navigate = useNavigate();
-
-  // Initialize the data
   const [form, setForm] = useState({
     firstname: "",
     lastname: "",
     email: "",
-    phone: "", 
+    phone: "",
     password: "",
   });
 
-  const [alert, setAlert] = useState({
-    show: false,
-    message: "",
-    isSuccess: false  
-  });
-
-  // Function to show alert
-  const showAlert = (isSuccess = false, message) => {
-    setAlert({
-      show: true,
-      message: message,
-      isSuccess: isSuccess
-    });
-
-    // Auto-hide 5 sec
-    setTimeout(() => {
-      setAlert(prev => ({ ...prev, show: false }));
-    }, 3000);
-  };
-
-  // Function to hide the alert
-  const hideAlert = () => {
-    setAlert(prev => ({ ...prev, show: false}));
-  };
-
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({ show: false, message: "", isSuccess: false });
 
-  // Data validations
+  const showAlert = (isSuccess, message) => {
+    setAlert({ show: true, message, isSuccess });
+    setTimeout(() => setAlert(prev => ({ ...prev, show: false })), 2500);
+  };
+
   const handleSubmit = async () => {
     const { firstname, lastname, email, phone, password } = form;
-
-    const trimmedFirstname = firstname.trim();
-    const trimmedLastname = lastname.trim();
-    const trimmedEmail = email.trim();
-    const trimmedPhone = phone.toString().trim();
-    
-    if (!trimmedFirstname || !trimmedLastname || !trimmedEmail || !trimmedPhone || !password) {
-      showAlert(false, "All fields are required");
-      return;
+    if (!firstname.trim() || !lastname.trim() || !email.trim() || !phone.trim() || !password) {
+      return showAlert(false, "All fields are required");
     }
 
     setLoading(true);
-    hideAlert(); 
 
     try {
-      const requestData = {
-        FirstName: trimmedFirstname,    
-        LastName: trimmedLastname,      
-        Email: trimmedEmail,            
-        Phone: trimmedPhone, 
-        Password: password             
-      };
-
-      const response = await RegisterService(requestData);
-
-      //console.log("Registration successful:", response);
-      showAlert(true, "Account created successfully!");
-
-      // Save the email to send it with the verification code to the API
-      localStorage.setItem("verificationEmail", trimmedEmail);
-
-      setTimeout(() => {
-
-        navigate("/auth/verification");
-
-      }, 2500);
-      
-      // Reset form
-      setForm({
-        firstname: "",
-        lastname: "",
-        email: "",
-        phone: "",
-        password: "",
+      await RegisterService({
+        FirstName: firstname.trim(),
+        LastName: lastname.trim(),
+        Email: email.trim(),
+        Phone: phone.trim(),
+        Password: password,
       });
 
+      showAlert(true, "Account created successfully!");
+      localStorage.setItem("verificationEmail", email.trim());
+
+      setTimeout(() => navigate("/auth/verification"), 2500);
+
+      setForm({ firstname: "", lastname: "", email: "", phone: "", password: "" });
     } catch (error) {
-
-      //console.error("Registration error:", error.message);
       showAlert(false, `Registration failed: ${error.message}`);
-      //console.log("Current form state:", form);
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
   return (
-    <>
-      {/* Container principal centrado */}
-      <div className="w-full h-screen flex items-center justify-center relative">
-        
-        {/* Formulario centrado */}
-        <div className="w-1/4 h-5/6 bg-black/30 backdrop-blur-md rounded-2xl flex flex-col items-center justify-start border border-gray-700 shadow-[0_0_8px_1px_rgba(255,255,255,0.15)] p-6 space-y-4 text-white">
-          {/* Title */}
-          <div className="w-full text-center">
-            <h1 className="text-2xl font-bold tracking-wide">Create Account</h1>
-          </div>
+    <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-1/3 h-2/3 flex flex-col justify-center items-center">
+        <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
+        <span className="mb-4">Join us and start chatting instantly</span>
 
-          {/* Inputs section */}
-          <div className="w-full flex flex-col space-y-3">
-            {/* Input group */}
-            {[
-              { label: "First name", type: "text", id: "firstname" },
-              { label: "Last name", type: "text", id: "lastname" },
-              { label: "Email", type: "email", id: "email" },
-              { label: "Phone number", type: "tel", id: "phone" }, 
-              { label: "Password", type: "password", id: "password" },
-            ].map(({ label, type, id }) => (
-              <div key={id} className="flex flex-col gap-1">
-                <label htmlFor={id} className="text-sm font-light">
-                  {label}
-                </label>
-                <input
-                  type={type}
-                  id={id}
-                  value={form[id]}
-                  className="h-8 rounded-md bg-white text-black px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                  onChange={(e) => {
-                    let value = e.target.value;
-                    setForm({ ...form, [id]: value });
-                  }}
-                  disabled={loading}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Button */}
-          <div className="w-full pt-2">
-            <button 
-              className="w-full h-10 bg-blue-950 cursor-pointer text-white font-semibold rounded-md shadow-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-900 transition"
-              onClick={handleSubmit}
+        <div className="w-5/6 flex flex-col gap-3">
+          {[
+            { label: "First name", id: "firstname", type: "text" },
+            { label: "Last name", id: "lastname", type: "text" },
+            { label: "Email", id: "email", type: "email" },
+            { label: "Phone", id: "phone", type: "tel" },
+            { label: "Password", id: "password", type: "password" },
+          ].map(({ label, id, type }) => (
+            <input
+              key={id}
+              type={type}
+              placeholder={label}
+              value={form[id]}
+              onChange={(e) => setForm({ ...form, [id]: e.target.value })}
               disabled={loading}
-            >
-              {loading ? "Creating..." : "Create"}
-            </button>
-          </div>
+              className="h-12 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          ))}
         </div>
+
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-5/6 mt-4 bg-black text-white py-2 rounded-2xl"
+        >
+          {loading ? "Creating..." : "Create Account"}
+        </button>
 
         {alert.show && (
           <div className="fixed bottom-6 right-6 z-50 max-w-sm animate-in slide-in-from-right duration-300">
-            <Alert 
-              message={alert.message} 
-              isSuccess={alert.isSuccess}
-            />
+            <Alert message={alert.message} isSuccess={alert.isSuccess} />
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
