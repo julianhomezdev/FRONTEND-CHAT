@@ -22,7 +22,7 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      await LoginService({ Email: form.email.trim(), Password: form.password });
+      await LoginService(form.email.trim(), form.password );
       showAlert(true, "Login successful");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
