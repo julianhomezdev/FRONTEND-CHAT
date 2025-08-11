@@ -3,6 +3,8 @@ import { useState } from "react";
 import { RegisterService } from "../../services/Auth/RegisterService";
 import Alert from "../../Components/Alerts/Alert";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export function FormRegister() {
   const navigate = useNavigate();
@@ -81,10 +83,17 @@ export function FormRegister() {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-5/6 mt-4 bg-black text-white py-2 rounded-2xl"
+          className="w-5/6 mt-4 bg-black text-white py-2 rounded-2xl cursor-pointer"
         >
           {loading ? "Creating..." : "Create Account"}
         </button>
+
+       <span className="mt-2">
+          Already have an account?
+          <span>
+            <Link to="http://localhost:5173/auth/Login" className="ml-1 text-blue-600 hover:underline">Login</Link>
+          </span>
+        </span>
 
         {alert.show && (
           <div className="fixed bottom-6 right-6 z-50 max-w-sm animate-in slide-in-from-right duration-300">

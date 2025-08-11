@@ -1,7 +1,7 @@
 export async function RegisterService(data) {
 
   try {
-    const response = await fetch("https://localhost:7125/api/Register/register", {
+    const response = await fetch("https://localhost:7125/api/Register", {
 
       method: 'POST',
       headers: {
