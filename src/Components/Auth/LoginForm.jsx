@@ -24,7 +24,7 @@ export function LoginForm() {
     try {
       await LoginService(form.email.trim(), form.password );
       showAlert(true, "Login successful");
-      setTimeout(() => navigate("/"), 2000);
+      setTimeout(() => navigate("/set"), 2000);
     } catch (error) {
       showAlert(false, `Login failed: ${error.message}`);
     } finally {
