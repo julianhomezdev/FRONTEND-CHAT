@@ -1,8 +1,4 @@
-import { useNavigate } from "react-router";
-
 export async function LoginService(email, password) {
-
-
 
     try {
 
@@ -17,13 +13,17 @@ export async function LoginService(email, password) {
             body: JSON.stringify({Email: email, Password: password}),
 
         });
+        
+        const data = await response.json();
+        localStorage.setItem("Name", data.firstName)
+
 
         if(!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Error logging in");
+            throw new Error(data.message || "Error logging in");
         }
-
-        return await response.json();
+        
+        console.log(data);
+        return data;
 
 
 
