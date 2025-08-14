@@ -4,6 +4,12 @@ import RightRow from "../../Components/svg/RightRow";
 
 export default function SetProfile() {
   const [preview, setPreview] = useState(null);
+  const [description, setDescription] = useState("");
+
+  // Handle description change
+  const handleDescription = (e) => {
+    setDescription(e.target.value);
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -11,6 +17,11 @@ export default function SetProfile() {
       setPreview(URL.createObjectURL(file));
     }
   };
+
+  const handleSubmit = () =>{
+    console.log(description);
+    console.log(preview);
+  }
 
   const name = localStorage.getItem("Name");
 
@@ -60,11 +71,12 @@ export default function SetProfile() {
               type="text"
               placeholder="Write a short description of you"
               className="flex-1 pl-6 pt-2 pb-2 rounded-4xl bg-white/20 border border-white/30 backdrop-blur-md text-black placeholder-black/60 outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={handleDescription}
             />
           </div>
 
           <div className="w-1/8 h-full flex justify-center items-center">
-            <button className="w-12 h-12 rounded-full bg-blue-500/30 border border-white/30 backdrop-blur-md shadow-lg text-white flex items-center justify-center active:scale-90 transition-transform duration-150 cursor-pointer">
+            <button onClick={handleSubmit} className="w-12 h-12 rounded-full bg-blue-500/30 border border-white/30 backdrop-blur-md shadow-lg text-white flex items-center justify-center active:scale-90 transition-transform duration-150 cursor-pointer">
               <RightRow />
             </button>
           </div>
