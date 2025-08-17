@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import RightRow from "../../Components/svg/RightRow";
+import { useNavigate } from "react-router-dom";
+import { SetProfileService } from "../../services/User/SetProfileService";
+
 
 export default function SetProfile() {
+
   const [preview, setPreview] = useState(null);
+  const [file, setFile] = useState(null);
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+
+
 
   // Handle description change
   const handleDescription = (e) => {
@@ -12,18 +20,60 @@ export default function SetProfile() {
   }
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
+
+    const selectedFile = e.target.files[0];
+
+    if(selectedFile) {
+
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile));
+
     }
   };
 
-  const handleSubmit = () =>{
-    console.log(description);
+  const name = localStorage.getItem("Name");
+
+
+
+  const handleSubmit = async () => {
+
+    console.log(file);
     console.log(preview);
+
+
+    const email = localStorage.getItem("verificationEmail");
+    
+
+
+    const formData = new FormData();
+    formData.append("File", file);
+    formData.append("Description", description);
+    formData.append("Email", email);
+
+    try {
+      await SetProfileService(formData);
+
+      // If all is ok navigate to the home
+      setTimeout(() => {
+
+        navigate("/")
+
+      }, 2500)
+
+
+    } catch (error) {
+
+
+        console.log(error);
+
+
+    }
+
+
+
   }
 
-  const name = localStorage.getItem("Name");
+
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center bg-gray-300 gap-2">
@@ -76,7 +126,7 @@ export default function SetProfile() {
           </div>
 
           <div className="w-1/8 h-full flex justify-center items-center">
-            <button onClick={handleSubmit} className="w-12 h-12 rounded-full bg-blue-500/30 border border-white/30 backdrop-blur-md shadow-lg text-white flex items-center justify-center active:scale-90 transition-transform duration-150 cursor-pointer">
+            <button type="button" onClick={handleSubmit} className="w-12 h-12 rounded-full bg-blue-500/30 border border-white/30 backdrop-blur-md shadow-lg text-white flex items-center justify-center active:scale-90 transition-transform duration-150 cursor-pointer">
               <RightRow />
             </button>
           </div>
