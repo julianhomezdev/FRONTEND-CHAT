@@ -5,6 +5,7 @@ import { LoginPage } from "./Pages/Auth/LoginPage";
 import { VerificationPage } from "./Pages/Auth/VerificationPage";
 import { HomePage } from "./Pages/common/HomePage";
 import SetProfile from "./Pages/common/SetProfile";
+import ChatHome from "./Pages/Chat/ChatHome";
 
 export function App () {
     return (
@@ -16,6 +17,7 @@ export function App () {
                 <Route path="/auth/verification" element={<VerificationPage/>} />
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/set" element={<SetProfile/>} />
+                <Route path="/chats" element={<ChatHome/>} />
             </Routes>
         </BrowserRouter>
     )
