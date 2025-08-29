@@ -8,7 +8,7 @@ export default function ChatHome() {
 
         <>
 
-        <div className="w-full h-screen  flex p-0">
+        <div className="w-full h-screen  flex p-0 bg-gray-300">
 
             <HomeChatSideBar />
 
